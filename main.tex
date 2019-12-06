@@ -1,0 +1,208 @@
+%%% Clinic Template
+%%%
+%%% C.M. Connelly <cmc@math.hmc.edu>
+%%%
+%%%  $Id$
+
+
+%%% !!! HMC STUDENTS SHOULD REMOVE THE FOLLOWING COPYRIGHT NOTICE FROM
+%%% !!! FINAL SUBMISSIONS.
+
+%%% Copyright (C) 2004-2010 Department of Mathematics, Harvey Mudd College.
+%%%
+%%% This file is part of the hmcclinic class document provided to
+%%% HMC mathematics students.
+%%%
+%%% See the COPYING document, which should accompany this
+%%% distribution, for information about distribution and 
+%%% modification of the document and its components.
+
+%%% !!! END COPYRIGHT NOTICE.
+
+
+%%% Clinic reports use the clinic class, which should be located
+%%% somewhere in TeX's search path.
+
+%%% For your ``statement of work'' (or ``work statement''), specify
+%%% the ``proposal'' document-class option to the hmcclinic class.
+\documentclass[midyear]{cguclinic}
+
+%%% There are also some changes in pagination styles and content
+%%% that reflect the briefer nature of the proposal.  For example,
+%%% in the longer reports, you use \frontmatter, \mainmatter, and
+%%% \backmatter to separate some sections of the report from
+%%% others.  In the statement of work, you don't need those
+%%% commands, as no such division is necessary.
+
+%%% Other packages needed by your document may be loaded here.
+\usepackage{float}
+\usepackage[T1]{fontenc}
+\usepackage{fourier}
+\usepackage[english]{babel}
+\usepackage{amsmath,amsthm}
+\usepackage{graphicx}
+\usepackage[justification=justified]{caption}
+\usepackage{subcaption}
+\usepackage{comment}
+\usepackage{amsthm}
+\usepackage{tikz}
+\usepackage{enumitem}
+\usetikzlibrary{shapes,arrows}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning, decorations.pathmorphing, shadows,decorations.markings}
+\usepackage{pgf,pgfarrows,pgfnodes,pgfautomata,pgfheaps,pgfshade,tikz}
+\usetikzlibrary{arrows.meta, calc, chains, quotes, positioning, shapes.geometric, fit}
+\usepackage{booktabs}
+
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+%%% The major difference between the statement of work and a midyear
+%%% or final report is that the statement of work is typeset as an
+%%% article, which means that the highest level of structural
+%%% division available to you is section rather than chapter.
+
+%%% There are also some changes in pagination styles and content
+%%% that reflect the briefer nature of the proposal.  For example,
+%%% in the longer reports, you use \frontmatter, \mainmatter, and
+%%% \backmatter to separate some sections of the report from
+%%% others.  In the statement of work, you don't need those
+%%% commands, as no such division is necessary.
+
+%%% Other packages needed by your document may be loaded here.
+% \usepackage{url}              % For formatting URLs and other web or
+                                % file references.
+
+%%% Provide additional context around errors. 
+\setcounter{errorcontextlines}{1000}
+
+
+%% What is the name of the company or organization sponsoring your project?
+\sponsor{Sandia National Laboratories}
+
+%% What is the title of your report?
+\title{Graph Theoretic Machine Learning Approaches to Predict Atomic Scale Fracture in Silica-Based Glasses}
+
+%% Who are the authors of the report (your team members)?  (Separate
+%% names with \and.)
+\author{Shu Cheng \and Yuri Kim \and Adam Lawrence (Project Manager) \and Corina Oroz}
+
+%% What is your faculty advisor's name?  (Again, separate names with
+%% \and, if necessary.)
+\advisor{Allon Percus}
+
+%% Liaison's name or names?
+\liaison{Mark Wilson \and Thomas Hardin}
+
+%% Did you have an outside consultant help you with this project?  Put
+%% their names in the \consultant command.
+%\consultant{Joseph Jones}
+
+\date{December 6, 2019}
+% Uncomment to manually edit date. Commented, TeX will automatically insert today's date.
+
+%%% End of information section.
+
+%%% New commands and environments.
+
+%%% You can define your own commands and environments here.  If you
+%%% have a lot of material here, you might want to consider splitting
+%%% the commands and environments into a separate ``style'' file that
+%%% you load with \usepackage.
+
+%\newcommand{\coolcommand}[1]{#1 is cool.} % Lets everyone know that
+                                % the person or thing that you provide
+                                % as the argument to the command is
+                                % cool.
+
+
+%%% Some theorem-like command definitions.
+
+%%% The \newtheorem command comes from the amsthm package.  That
+%%% package is loaded by the class file.
+
+%%% Note that these definitions have changed from the version in the
+%%% sample report document by dropping the ``within'' argument.  See
+%%% Gratzer's _Math into LaTeX_ or the AMS-LaTeX documentation for
+%%% more details.
+
+% \newtheorem{thm}{Theorem}
+% \newtheorem{Theo1}{Theorem}
+% \newtheorem{Theo2}{Theorem}
+% \newtheorem{Lemma}{Lemma}
+\usepackage{url}
+
+
+%%% If you find that some words in your document are being hyphenated
+%%% incorrectly, you can specify the correct hyphenation using the
+%%% \hyphenation command.  Note that words are separated by
+%%% whitespace, as shown below.
+
+%\hyphenation{ap-pen-dix wer-ther-i-an}
+
+
+%%% The start of the document!
+
+%% The document environment is the main environment in any LaTeX
+%% document.  It contains other environments, as well as your text.
+
+\begin{document}
+\frontmatter
+
+\maketitle
+
+\abstract
+\input{Abstract}
+
+\tableofcontents
+
+\mainmatter
+
+\chapter{Introduction}
+\label{sec: Introduction}
+\input{Introduction}
+
+\chapter{Methods}
+\label{sec: Methods}
+\input{Methods}
+
+\chapter{Preliminary Results}
+\label{sec: Preliminary Results}
+\input{PrelimResults}
+
+
+%%% Appendices.
+
+%%% The appendices are delineated with the \appendix command.
+%%% Individual appendices are begun with the standard \chapter or
+%%% \section commands.
+%\appendix
+%\chapter{Appendix}
+%\input{Appendix}
+
+%\backmatter
+
+%%% Bibliography.
+
+%%% Depending on your field, it may or may not be appropriate to list
+%%% references for which you haven't included specific citations.  If
+%%% your field sanctions such practices, or if you just want to get an
+%%% idea of what you have in your bibliography file, you can include
+%%% everything with the \nocite{*} command.          
+
+%%% The appearance of your bibliography and citations in your text are
+%%% defined by a combination of any bibliography-related LaTeX
+%%% packages (such as natbib, harvard, or chicago) and the particular
+%%% bibliography style file that you load with the \bibliographystyle
+%%% command.  Bibliography-style files end in .bst; you can find them
+%%% by searching your file system using whatever tools you have for
+%%% doing searches.  (On most modern Unices, ``locate .bst'' will give
+%%% you an idea of what's available.)
+
+\bibliographystyle{IEEEtran}
+
+\small
+
+\bibliography{Bibliography}
+
+\end{document}
