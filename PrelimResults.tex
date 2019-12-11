@@ -7,7 +7,14 @@ Our preliminary investigation was localized to one LAMMPS simulation run. The da
 \subsection{Training Data}
 At the moment, data from one fully periodic simulation is used to train the base case model presented below.  Ultimately, we plan to generalize across different numbers of simulation to create a more sophisticated model and improve predicting accuracy. 
 
-The features we use include cell volume, number of bonds and maximum ring size at initial time step. The label is the dummy indicator of whether or not a certain atom has ever been part of a 20-sized ring during the whole timesteps.
+The features we use include cell volume, number of bonds and maximum ring size at initial time step. The label is the dummy indicator of whether or not a certain atom has ever been part of a 20-sized ring during the whole time steps.
+
+\section{Graph Representation}
+
+\subsection{Creation}The first milestone was to implement the basic graph representation in Python. Using the NetworkX library we were able to reconstruct the simulation in Python where a node is an individual atom, Si or O, and an edge is a bond between atoms. With this graph we were able to not only visualize our simulation at a more local window but we are able to create different measures, such as centrality. 
+
+\subsection{Correlation Between Features}
+After the graph had been created are now able to take a look at how the features of the atoms play a role within the structure and how they correlate with other quantities of interest within the system. One such structure is the role bridging oxygen play within the global structure of the simulation. 
 
 
 \section{Results}
@@ -20,6 +27,47 @@ Logistic Regression is a static model that we use to predict the labels with pro
 To tackle the problem of imbalanced class, we also implemented a Support Vector Machine model with a penalty,$c=1$, on the imbalanced classes. The model obtains an accuracy of 66\% and an area under the AUROC curve of 0.58.
 
 
+\section{Remaining Milestones}
+Now that this complex problem has been defined and initial investigations are complete, the remaining milestones for the Spring semester are to begin and complete the machine learning framework for predicting the project goals. 
+
+\begin{enumerate}
+\item Additional features extracted from the MD simulation data to add to training set.
+\item Ensemble classification method as well as recurrent neural network.
+\item Refine and add complexity to the network.
+\end{enumerate}
+
+
+\section{Deliverable Status}
+\begin{enumerate}
+\item Graph representation implemented in Python.
+	\begin{itemize}
+		\item Basic graph representation completed. More complex representations currently being investigated. 
+	\end{itemize} 
+\item Feature extraction from the MD simulation data to create training set.
+	\begin{itemize}
+		\item Raw features from MD simulation data extracted and analzyed. Advanced measures and feature correlation in progress. 
+	\end{itemize} 
+\item Midterm presentation.
+	\begin{itemize}
+		\item Complete, November 20, 2019.
+	\end{itemize} 
+\item Mid-year report.
+	\begin{itemize}
+		\item Complete, December 16, 2019.
+	\end{itemize} 
+\item  Journal  article  on  graph-theoretic  machine  learning  approach  forpredicting fracture dynamics, submitted to peer-reviewed journal.
+	\begin{itemize}
+		\item Forthcoming, Spring 2019.
+	\end{itemize} 
+\item Final presentation.
+	\begin{itemize}
+		\item Forthcoming, Spring 2019.
+	\end{itemize} 
+\item Final report.
+	\begin{itemize}
+		\item Forthcoming, Spring 2019.
+	\end{itemize} 
+\end{enumerate}
 
 \iffalse
 \subsection{Crack Identification}
