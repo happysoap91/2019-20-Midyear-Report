@@ -66,14 +66,6 @@ An alternative graph representation is to consider only silicon atoms as nodes, 
 Like the basic graph representation described previously, this reduced representation keeps the number of vertices constant.  On the other hand, it does not explicitly track bonds that are formed and broken at each time step. If a bond is broken in an Si--O--Si bridge, this representation will not distinguish between the case where the first bond, or the second bond, or both, are broken, although this may not be an issue if we are primarily interested in Si atoms on the crack face.  Similarly, the coordination number of an Si atom will not be given explicitly by node degree.  However, this information can, if needed, be encoded as feature information (see below).
 
 
-\subsubsection{Topological Graph Representation}
-
-
-We will also explore additional means of representing the network.  One possibility may be in terms of ring structure.  Ebrahem et al.~\cite{ebrahem2018influence} have studied medium-range order in silica glasses, expressed by the sizes of rings of alternating Si and O atoms, which correspond to cycles in the two graph representations discussed above. It has been observed that these ring size statistics can influence the tensile strength of SiO$_2$, with a flatter distribution of sizes accelerating the fracturing process, and a more sharply peaked distribution (larger number of medium-sized rings) delaying it. The intuition behind this observation is that large rings create large void in the material. And as tensile is applied, the void will be more likely to deform and eventually lead to fracture.
-
-As a result, it is possible that, by letting vertices represent rings with vertex labels describing ring size, we may obtain useful predictions of fracture locations. This approach would provide a very significant reduction of graph size.  It would have the limitation, however, that the vertex set would not remain constant from one time step to the next.  As bonds break and form, the composition of the rings change, and it may be challenging to interpret what a particular $t=0$ ring becomes at a later time.
-
-
 \section{Feature Description}
 \label{subsec: Features}
 Given a graph representation, we may associate features with the nodes (as well as, in principle, the edges) of the graph.  Our ML algorithm can use these features to describe data points in the training set, learning a function that maps feature values to an output label.  The challenge is to identify features that are likely to have predictive value for the output label of interest, namely whether a node is on the surface of a crack face.
@@ -124,6 +116,11 @@ We propose a range of candidate features that are meaningful both for the basic 
     \item\textbf{$k$th neighbor quantities:} A crucial assumption in our modeling approach is that structure beyond nearest-neighbor information can help in predicting fracture nucleation.  We therefore propose considering not only the number of bridging O atoms directly bonded to an Si atom, but also the number within a given number of bonds from an Si atom.
     
     In the reduced graph representation, a qualitatively similar quantity would be the following.  For an atom $i$ at time $t$, let $b^{(k)}_i(t)$ be the number of vertices whose path length to $i$ consists of at most $k$ edges. This defines a class of features for different values of $k$.  For $k=1$, $b^{(1)}_i(t)$ would simply be the vertex degree, i.e.,\ the number of bridging oxygens around $i$.  For increasing $k$, these features would consider local neighborhoods (around $i$) of increasing size.
+
+    
+    
+    \item\textbf{Maximum ring size:} It has been observed by Ebrahem et al.~\cite{ebrahem2018influence} that medium-range order in silica glasses, expressed by the sizes of rings of alternating Si and O atoms, can influence the tensile strength of SiO$_2$, with a flatter distribution of sizes accelerating the fracturing process, and a more sharply peaked distribution (larger number of medium-sized rings) delaying it. As a result, we will also make use of the ring size distribution as a feature.     
+    
     
 \end{itemize}
 
@@ -199,7 +196,43 @@ We propose an alternative way to extracting information from simulations on whet
 
 \subsection{Indicator of Large Sized Ring}
 
-Under the assumption that large-sized ring, especially ring of size 20, is a potential solid indicator of fracture nucleation, we can also define the ground truth as a dummy indicator variable $\phi_i(t) \in\{0,1\}$, specifying whether or not an atom $i$ has ever been part of a large-sized ring during all simulation steps. The advantage of this definition is that in such a way, this indicator is less arbitrary. However, the disadvantage is that the number of large rings is very small compared to other smaller-sized rings. For example, in one simulation, only 423 out of around 70000 atoms are part of a 20-sized ring. This worsens the imbalanced classes issue and thus creates a modelling challenge to tackle this problem.
+        %%  LOOP20 AND FRACTURE NUCLEATION FIGURE 
+    \begin{figure}
+    \begin{subfigure}{.5\textwidth}
+      \centering
+      \includegraphics[width=.8\linewidth]{images/fp1_ini_ring20_t=604.png}
+      \caption{Initial appearance of a large ring at t = 1,208,000}
+      \label{fig:loopfig1}
+    \end{subfigure}%
+    \begin{subfigure}{.5\textwidth}
+      \centering
+      \includegraphics[width=.8\linewidth]{images/fp1_ini_nucle_t=619.png}
+      \caption{Initial fracture nucleation appears at t = 1,238,000}
+      \label{fig:loopfig2}
+    \end{subfigure}
+    \begin{subfigure}{.5\textwidth}
+      \centering
+      \includegraphics[width=.8\linewidth]{images/fp1_propa.png}
+      \caption{Large rings appear along with fracture propagation}
+      \label{fig:loopfig3}
+    \end{subfigure}
+    \begin{subfigure}{.5\textwidth}
+      \centering
+      \includegraphics[width=.8\linewidth]{images/fp1_propa2.png}
+      \caption{Large rings appear along with new nucleation}
+      \label{fig:loopfig4}
+    \end{subfigure}
+    
+    \caption{Four snapshots showing the relationship between large ring structure and fracture nucleation/propagation behavior}
+    \label{fig:loopfig}
+    \end{figure}
+    
+    As we previously discussed in section \ref{subsec: Features} that the sizes of rings, defined as lengths of cycle consisting of alternating Si and O atoms, has been observed to correlate with fracture behavior, we propose an alternative potential indicator of fracture nucleation using rings of size 20. So, we can also define the ground truth as a dummy indicator variable $\phi_i(t) \in\{0,1\}$, specifying whether or not an atom $i$ has ever been part of a ring of size 20 during all simulation steps.
+    
+    Figure \ref{fig:loopfig} helps explain intuition behind this observation. As figure \ref{fig:loopfig1} shows, a large ring appears in the material. And inside the ring, there is a large void. As tensile is applied, the large void will be more likely to deform and eventually lead to fracture. As the figure \ref{fig:loopfig2} shows, a fracture nucleates where the large ring appears. Not only does large rings relate to fracture nucleation, they are also related to fracture propagation. Figure \ref{fig:loopfig3} indicates appearance of large rings along with direction that the existing fracture propagates. Figure \ref{fig:loopfig4} shows that a large ring also appears when new fracture nucleates when there is existing fracture.
+
+    The advantage of this definition is that in such a way, this indicator is less arbitrary. However, the disadvantage is that the number of large rings is very small compared to other smaller-sized rings. For example, in one simulation, only 423 out of around 70000 atoms are part of a 20-sized ring. This worsens the imbalanced classes issue and thus creates a modelling challenge to tackle this problem.
+
 
 
 \section{Machine Learning Methods}
@@ -244,7 +277,7 @@ Our boosting algorithm will work as follows:
 \begin{figure}[!b]
     \centering
     \noindent
-\includegraphics[width=12cm , height = 5cm]{rnn.PNG}
+\includegraphics[width=12cm , height = 5cm]{images/rnn.PNG}
     \caption{Representation of a Recurrent Neural Network}
     \label{fig:rnn}
 \end{figure}
