@@ -9,6 +9,15 @@ At the moment, data from one fully periodic simulation is used to train the base
 
 The features we use include cell volume, number of bonds and maximum ring size at initial time step. The label is the dummy indicator of whether or not a certain atom has ever been part of a 20-sized ring during the whole time steps.
 
+
+\begin{figure}[!b]
+    \centering
+    \noindent
+\includegraphics[width=8cm , height = 6cm]{images/svm_roc.png}
+    \caption{Plot of False Positive Rate against True Positive Rate for Support Vector Machine Model}
+    \label{fig:svm_roc}
+\end{figure}
+
 \section{Graph Representation}
 
 \subsection{Creation}The first milestone was to implement the basic graph representation in Python. Using the NetworkX library we were able to reconstruct the simulation in Python where a node is an individual atom, Si or O, and an edge is a bond between atoms. With this graph we were able to not only visualize our simulation at a more local window but we are able to create different measures, such as centrality. 
@@ -24,7 +33,8 @@ In this section, we presents the preliminary results we obtained from base case 
 Logistic Regression is a static model that we use to predict the labels with probabilities of the underlying classes. However, due to imbalanced class, the model ignores the false negatives and predicts all the labels to be negative to obtain a high accuracy. 
 
 \subsection{SVM with imbalanced class}
-To tackle the problem of imbalanced class, we also implemented a Support Vector Machine model with a penalty,$c=1$, on the imbalanced classes. The model obtains an accuracy of 66\% and an area under the AUROC curve of 0.58.
+
+To tackle the problem of imbalanced class, we also implemented a basic Support Vector Machine model with a penalty on the imbalanced classes. The model obtains an accuracy of 66\% and an area under the AUROC curve of 0.58 as presented by figure \ref{fig:svm_roc}.
 
 
 \section{Remaining Milestones}
