@@ -50,7 +50,7 @@
 \usetikzlibrary{shapes,arrows}
 \usetikzlibrary{calc}
 \usetikzlibrary{positioning, decorations.pathmorphing, shadows,decorations.markings}
-\usepackage{pgf,pgfarrows,pgfnodes,pgfautomata,pgfheaps,pgfshade,tikz}
+%\usepackage{pgf,pgfarrows,pgfnodes,pgfautomata,pgfheaps,pgfshade,tikz}
 \usetikzlibrary{arrows.meta, calc, chains, quotes, positioning, shapes.geometric, fit}
 \usepackage{booktabs}
 
@@ -98,7 +98,7 @@
 %% their names in the \consultant command.
 %\consultant{Joseph Jones}
 
-\date{December 6, 2019}
+\date{December 16, 2019}
 % Uncomment to manually edit date. Commented, TeX will automatically insert today's date.
 
 %%% End of information section.
@@ -139,7 +139,7 @@
 %%% whitespace, as shown below.
 
 %\hyphenation{ap-pen-dix wer-ther-i-an}
-
+\tolerance=500
 
 %%% The start of the document!
 
@@ -170,7 +170,9 @@
 \label{sec: Preliminary Results}
 \input{PrelimResults}
 
-
+\chapter{Conclusion}
+\label{sec: Conclusion}
+\input{Conclusion}
 %%% Appendices.
 
 %%% The appendices are delineated with the \appendix command.

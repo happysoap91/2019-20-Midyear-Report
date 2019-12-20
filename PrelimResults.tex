@@ -2,32 +2,62 @@
 \subsection{Initial Data}
 %The initial architecture has been developed using a data package from LANL for a two-crack system. Data for 250 time steps was provided, with failure occurring at step 52. While useful for testing purposes, this mesh was much coarser than those of the true systems. Hence, for training the network, we used more representative systems of standard HOSS output.
 
-Our preliminary investigation was localized to one LAMMPS simulation run. The data used contained information on bonds, atoms and rings, under the fully periodic condition.
+Our preliminary investigation was localized to one LAMMPS simulation run. The data used contained information on bonds, atoms and rings, under the fully periodic condition. 
+
+For simplicity's sake, only the first time step was used to create the basic graph representation in Python. For this analysis, the key data files utilized were the bond information file, used to create the edges between nodes and the post-processed nucleation file which stores information regarding volume and displacement per individual atom.  
 
 \subsection{Training Data}
 At the moment, data from one fully periodic simulation is used to train the base case model presented below.  Ultimately, we plan to generalize across different numbers of simulation to create a more sophisticated model and improve predicting accuracy. 
 
 The features we use include cell volume, number of bonds and maximum ring size at initial time step. The label is the dummy indicator of whether or not a certain atom has ever been part of a 20-sized ring during the whole time steps.
 
-
-\begin{figure}[!b]
-    \centering
-    \noindent
-\includegraphics[width=8cm , height = 6cm]{images/svm_roc.png}
-    \caption{Plot of False Positive Rate against True Positive Rate for Support Vector Machine Model}
-    \label{fig:svm_roc}
-\end{figure}
-
 \section{Graph Representation}
 
-\subsection{Creation}The first milestone was to implement the basic graph representation in Python. Using the NetworkX library we were able to reconstruct the simulation in Python where a node is an individual atom, Si or O, and an edge is a bond between atoms. With this graph we were able to not only visualize our simulation at a more local window but we are able to create different measures, such as centrality. 
+\subsection{Creation}The first milestone was to implement the basic graph representation in Python. Using the NetworkX library we were able to reconstruct the simulation in Python where a node is an individual atom, Si or O, and an edge is a bond between atoms. With this graph we were able to not only visualize our simulation in a more local window but we are able to create our topological features.
 
-\subsection{Correlation Between Features}
+One of our global topological features has shown to be of particular interest, Eigenvector centrality. Using only the information provided during t=0 the eigenvector centrality of our graph appears to be near where the fracture appears at a much later time after nucleation. Figures 3.1 and 3.2 shows this proximity. 
+
+Figure 3.1 shows the eigenvalue centrality of the simulation at t=0. This visual is color coded in a way where blue represents no influence on the network, and the closer the color gets to red indicates the range of influence. With red being the most influential atoms in the simulation. 
+
+Figure 3.2 represents the simulation at t=646,  where the fracture has already nucleated and propagated after some time. Comparing the two visuals one can easily see that there is a close proximity between nucleation and eigenvector centrality. 
+
+While this is only a visual representation there certainly seems to be some indication that eigenvector centrality plays an import role in the nucleation of the simulation. This result will help guide us in our future research and we hope to have a more numerical measurement of this proximity so we can use this global topological feature in our machine learning methods. 
+
+\begin{figure}[H]
+    \centering
+    \noindent
+\includegraphics[width=10cm , height = 8cm]{images/left.PNG}
+    \caption{Eigenvector Centrality at time step 0}
+    \label{fig:eig_cent}
+
+
+    \centering
+    \noindent
+\includegraphics[width=12cm , height = 8cm]{images/right.PNG}
+    \caption{Simulation at time step 646}
+    \label{fig:right}
+\end{figure}
+
+\subsection{Feature Correlations}
 After the graph had been created are now able to take a look at how the features of the atoms play a role within the structure and how they correlate with other quantities of interest within the system. One such structure is the role bridging oxygen play within the global structure of the simulation. 
 
+Below in Figure 3.3 we can see how well specific feature correlate with each other. On this specific heat map we have both degree and eigenvector centrality measures. As you can see degree centrality is perfectly correlated with the number of bridging oxygen one away. Whereas, volume at t = 0 appears to have a negative correlation on the number of bridging oxygen 1 away and a minor correlation ~10 percent on the number of bridging oxygen 2 away. 
+
+While we have no found any major correlation between features the graph representation we have created has allowed us the freedom of investigation, and any future features can be measured by their correlation on the simulation. 
+
+
+\begin{figure}[H]
+    \centering
+    \noindent
+\includegraphics[width=10cm , height = 9cm]{images/Heatmap.PNG}
+    \caption{Heat map of Pearson correlation coefficients.}
+    \label{fig:heatmap}
+\end{figure}
 
 \section{Results}
 In this section, we presents the preliminary results we obtained from base case toy models, which are Logistic Regression and Support Vector Machine with imbalanced class.
+
+{\color{red} For the methods below: What features are you using?  What labels are you trying to predict?  Provide all details needed for someone to reproduce your work.}
 
 \subsection{Logistic Regression}
 Logistic Regression is a static model that we use to predict the labels with probabilities of the underlying classes. However, due to imbalanced class, the model ignores the false negatives and predicts all the labels to be negative to obtain a high accuracy. 
@@ -36,48 +66,13 @@ Logistic Regression is a static model that we use to predict the labels with pro
 
 To tackle the problem of imbalanced class, we also implemented a basic Support Vector Machine model with a penalty on the imbalanced classes. The model obtains an accuracy of 66\% and an area under the AUROC curve of 0.58 as presented by figure \ref{fig:svm_roc}.
 
-
-\section{Remaining Milestones}
-Now that this complex problem has been defined and initial investigations are complete, the remaining milestones for the Spring semester are to begin and complete the machine learning framework for predicting the project goals. 
-
-\begin{enumerate}
-\item Additional features extracted from the MD simulation data to add to training set.
-\item Ensemble classification method as well as recurrent neural network.
-\item Refine and add complexity to the network.
-\end{enumerate}
-
-
-\section{Deliverable Status}
-\begin{enumerate}
-\item Graph representation implemented in Python.
-	\begin{itemize}
-		\item Basic graph representation completed. More complex representations currently being investigated. 
-	\end{itemize} 
-\item Feature extraction from the MD simulation data to create training set.
-	\begin{itemize}
-		\item Raw features from MD simulation data extracted and analzyed. Advanced measures and feature correlation in progress. 
-	\end{itemize} 
-\item Midterm presentation.
-	\begin{itemize}
-		\item Complete, November 20, 2019.
-	\end{itemize} 
-\item Mid-year report.
-	\begin{itemize}
-		\item Complete, December 16, 2019.
-	\end{itemize} 
-\item  Journal  article  on  graph-theoretic  machine  learning  approach  forpredicting fracture dynamics, submitted to peer-reviewed journal.
-	\begin{itemize}
-		\item Forthcoming, Spring 2019.
-	\end{itemize} 
-\item Final presentation.
-	\begin{itemize}
-		\item Forthcoming, Spring 2019.
-	\end{itemize} 
-\item Final report.
-	\begin{itemize}
-		\item Forthcoming, Spring 2019.
-	\end{itemize} 
-\end{enumerate}
+\begin{figure}[H]
+    \centering
+    \noindent
+\includegraphics[width=8cm , height = 6cm]{images/svm_roc.png}
+    \caption{Plot of False Positive Rate against True Positive Rate for Support Vector Machine Model}
+    \label{fig:svm_roc}
+\end{figure}
 
 \iffalse
 \subsection{Crack Identification}
@@ -149,44 +144,5 @@ Ultimately, these preliminary results showed us that the network has the ability
 \label{fig:mean_proj_x_length}
 \end{figure}
 
-\section{Remaining Milestones}
-The two remaining milestones serve as goalposts for the second half of the CGU Math Clinic year:
-\begin{itemize}
-\item Determine the importance of different crack features for the prediction of the evolution of the fracture network.
-\item Refine and add complexity to the network (i.e.,\ additional convolutional filters, layered graph convolution, compare effectiveness of spectral clustering graph convolutions versus standard graph convolutions).
-\end{itemize}
 
-
-
-\section{Deliverable Status}
-\begin{enumerate}
-\item Keras implementation of proposed architecture, coded in Python.
-	\begin{itemize}
-		\item In progress.
-	\end{itemize} 
-\item Full documentation of code in iPython Notebook.
-	\begin{itemize}
-		\item In progress. On track to be finalized along with final code.
-	\end{itemize} 
-\item Midterm presentation.
-	\begin{itemize}
-		\item Complete, November 14, 2017.
-	\end{itemize} 
-\item Mid-year report.
-	\begin{itemize}
-		\item Complete, December 18, 2017.
-	\end{itemize} 
-\item Journal article on the dynamic prediction of the fracture of brittle material using deep learning, submitted to peer-reviewed journal.
-	\begin{itemize}
-		\item Forthcoming, Spring 2018.
-	\end{itemize} 
-\item Final presentation.
-	\begin{itemize}
-		\item Forthcoming, Spring 2018.
-	\end{itemize} 
-\item Final report.
-	\begin{itemize}
-		\item Forthcoming, Spring 2018.
-	\end{itemize} 
-\end{enumerate}
 \fi

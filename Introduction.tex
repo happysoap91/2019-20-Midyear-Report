@@ -1,6 +1,6 @@
 \section{Sponsor}
 
-The CGU Math Clinic project is sponsored by Sandia National Laboratories (SNL) in Albuquerque, New Mexico. SNL is managed and operated by the National Technology and Engineering Solutions of Sandia, an owned subsidiary of Honeywell International, Inc. Sandia was originally founded in 1949, and their current effort is to develop, engineer, and test non-nuclear components of nuclear weapons. Sandia responds to federal government solicitations, and one of their most recent projects is studying fractures in silica-based glasses. To optimize computation efficiency, Sandia aims to utilize machine learning (ML) algorithms which will lend to a greater understanding as to why and how fractures nucleate and propagate.
+The CGU Math Clinic project is sponsored by Sandia National Laboratories in Albuquerque, New Mexico. SNL is managed and operated by the National Technology and Engineering Solutions of Sandia, an owned subsidiary of Honeywell International, Inc. Originally founded in 1949, Sandia develops, engineers, and tests non-nuclear components of nuclear weapons, in response to federal government solicitations. Recent efforts at Sandia have involved studying fractures in silica-based glasses. In order to gain an improved understanding as to where and how fractures nucleate and propagate, Sandia aims to develop machine learning (ML) algorithms that will provide greater computational efficiency than the largely simulation-based approaches that are currently employed.
 
 %%%Example from 20117-18 report%%%
 %to further the US nuclear program, LANL's interest in modeling brittle damage centers around ensuring weapons safety and adherence to global nuclear testing standards by examining static fracture networks, modeling dynamic fracture propagation, and understanding uncertainty quantification and data assimilation. LANL currently has accurate, yet computationally intense methods of doing so. In the 2017-2018 project year, our focus is on modeling dynamic fracture propagation using Machine Learning (ML) methods based on LANL modeling data, to  reduce computational load dramatically while retaining that accuracy.
@@ -86,10 +86,10 @@ In order to model a silicate glass, MD simulates heating quartz to a very high t
 \begin{figure}
     \centering
     \noindent
-\includegraphics[width=0.45\textwidth]{frac_prop1.PNG}\hspace{0.15\textwidth}%
-\includegraphics[width=0.4\textwidth]{frac_prop2.PNG}\\[2em]
-\includegraphics[width=0.4\textwidth]{frac_prop3.PNG}\hspace{0.2\textwidth}%
-\includegraphics[width=0.4\textwidth]{frac_prop4.PNG}\par
+\hspace{6pt}\includegraphics[width=0.3\textwidth,height=0.35\textwidth]{images/frac_prop1.PNG}\hspace{0.23\textwidth}%
+\includegraphics[width=0.375\textwidth,height=0.325\textwidth]{images/frac_prop2.PNG}\\[2em]
+\includegraphics[width=0.4\textwidth,height=0.325\textwidth]{images/frac_prop3.PNG}\hspace{0.15\textwidth}%
+\includegraphics[width=0.45\textwidth,height=0.324\textwidth]{images/frac_prop4.PNG}\par
     \caption{Four snapshots showing the progression of an MD simulation of fracture propagation, in a 3D silicate glass sample. The material is loaded in uniaxial tension in the horizontal direction, with free surfaces in the two other directions.}
     \label{fig:crack_prop}
 \end{figure}
@@ -108,6 +108,7 @@ Recent years have seen a number of successful research efforts using ML, often c
 
 
 \section{Goals}
+\label{sec: Goals}
 The objective of our project is to develop supervised learning methods, trained on MD simulation data, that generate rapid predictions of where and when atomic-scale fractures occur in samples of silicate glasses under stress.  We aim to generate these predictions under multiple environmental conditions, and to validate them on existing MD simulation results.  Ultimately, we hope to relate our predictions to specific features characterizing local atomic structure, thus providing new insight into how this local structure leads to fracture and failure.
 
 We separate our overall objective into the following two goals:
@@ -120,7 +121,7 @@ A nucleation event is where a new fracture, or void, emerges in the simulated sy
 \item \textbf{Goal 2:} \emph{Predict fracture propagation.} 
 
 Fracture propagation is a continuing process of incorporating atoms into the fracture region, also known as the process zone.
-Once a fracture nucleates at the surface or within the bulk of the material, it grows with the continued application of mechanical stress.  We aim to identify which new atoms will lie on the fracture's boundary, meaning the surface of a crack face, as it propagates.  Our goal is to train a supervised learning algorithm to learn the dynamics of fracture propagation from the full time series of feature values, so that it can then predict a time series from $t=0$ feature values alone.
+Once a fracture nucleates at the surface or within the bulk of the material, it grows with the continued application of mechanical stress.  We aim to identify which new atoms will lie on the fracture's boundary, meaning the surface of a crack face, as it propagates.  Our goal is to train a supervised learning algorithm to learn the dynamics of fracture propagation from the full time series of feature values, so that it can then predict a time series from an initial state alone.
 \end{itemize}
 
 
